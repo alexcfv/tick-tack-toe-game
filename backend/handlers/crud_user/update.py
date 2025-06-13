@@ -29,6 +29,7 @@ async def update():
         
             result = updateUserById(user_id=user_id, data=new_user_info)
         
-            return jsonify(result)
+            if result: return 200
+            else: return 400
     else:
-        return jsonify(False)
+        return 404

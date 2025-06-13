@@ -20,8 +20,8 @@ async def login():
         if check_password_hash(hash, logging_user_password):
             userlogin = UserLogin().create(user_from_bd)
             login_user(userlogin)
-            return jsonify(True)
+            return 201
         else:
-            return jsonify(False)
+            return 400
     else:
-        return jsonify(False)
+        return 404
