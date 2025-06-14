@@ -14,7 +14,7 @@ async def delete():
     if user_from_bd:
         user_id = user_from_bd.id
         result = await deleteUserById(user_id)
-        return jsonify(result)
+        if result: return "Succesful delete"
     
     else:
-        return jsonify(False)
+        return "Have not user"

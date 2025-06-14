@@ -1,6 +1,6 @@
 from flask import request, Blueprint, jsonify
 from werkzeug.security import generate_password_hash
-from api.api_user import addUser
+from api.api_user import addUser, getUser
 
 registration_blueprint = Blueprint("registration", __name__)
 
@@ -17,4 +17,5 @@ async def registration():
         hash = generate_password_hash(registing_user_password)
         result = await addUser(registing_user_name, hash)
     
-    return jsonify(result)
+    if result: return "Registration succesful"
+    else: return "Eror"
