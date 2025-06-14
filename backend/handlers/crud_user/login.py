@@ -20,8 +20,8 @@ async def login():
         if check_password_hash(hash, logging_user_password):
             userlogin = UserLogin().create(user_from_bd)
             login_user(userlogin)
-            return 201
+            return "Login succesful"
         else:
-            return 400
+            return "Uncorrect password"
     else:
-        return 404
+        return "Error"

@@ -1,7 +1,8 @@
-from flask import request, Blueprint, jsonify
-from api.api_user import updateUserById, getUser
+from flask import request, Blueprint
+from api.api_user import updateUserById, getUserById
 from flask_login import login_required
 from models.user import User
+from models.user_login import UserLogin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 update_blueprint = Blueprint("update", __name__)
@@ -13,7 +14,7 @@ async def update():
     user_name = user["user_name"]
     user_password = user["password"]
     
-    user_from_bd = await getUser(user_name)
+    user_from_bd = await getUserById(int(UserLogin.get_id()))
     
     if user_from_bd:
         if check_password_hash(user_from_bd.password, user_password):
@@ -29,7 +30,7 @@ async def update():
         
             result = updateUserById(user_id=user_id, data=new_user_info)
         
-            if result: return 200
-            else: return 400
+            if result: return "Update succesful"
+            else: return "Error"
     else:
-        return 404
+        return "Uncorrect password"

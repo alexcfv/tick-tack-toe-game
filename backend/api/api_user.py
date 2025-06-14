@@ -1,7 +1,6 @@
-from models.db import db_connect, create_session, metadata
+from models.db import create_session, db_connect
 from models.user import User
 from flask import jsonify
-from sqlalchemy import delete, Table
 
 engine, connection = db_connect()
 
@@ -28,7 +27,7 @@ async def getUser(user_name: str) -> User:
             return None
 
 async def getUserById(user_id: int) -> bool:
-    session = create_session(engine)
+    session = create_session(session)
     with session:
         user_by_id = session.query(User).filter(User.id == user_id).first()
         

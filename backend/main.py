@@ -1,11 +1,15 @@
 from flask import Flask
 from flask_cors import CORS
-from backend.handlers.crud_user.registration import registration_blueprint
-from backend.handlers.crud_user.login import login_blueprint
-from backend.handlers.crud_user.delete import delete_blueprint
-from backend.handlers.crud_user.update import update_blueprint
+from handlers.crud_user.registration import registration_blueprint
+from handlers.crud_user.login import login_blueprint
+from handlers.crud_user.delete import delete_blueprint
+from handlers.crud_user.update import update_blueprint
 from models.user_login import UserLogin
 from flask_login import LoginManager
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -22,5 +26,5 @@ app.register_blueprint(delete_blueprint)
 app.register_blueprint(update_blueprint)
 
 if __name__ == "__main__":
-    app.secret_key = "super secret key"
+    app.secret_key = os.getenv("SECRET_KEY")
     app.run(debug=True)

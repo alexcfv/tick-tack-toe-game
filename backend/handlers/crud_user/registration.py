@@ -9,9 +9,6 @@ async def registration():
     registing_user = request.get_json()
     registing_user_name = registing_user["user_name"]
     
-    if getUser(registing_user_name):
-        return 409
-    
     registing_user_password = registing_user["password"]
     
     if len(registing_user_name) > 4  and len(registing_user_name) < 20 \
@@ -20,5 +17,5 @@ async def registration():
         hash = generate_password_hash(registing_user_password)
         result = await addUser(registing_user_name, hash)
     
-    if result: return 201
-    else: return 400
+    if result: return "Registration succesful"
+    else: return "Eror"

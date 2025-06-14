@@ -9,31 +9,39 @@ Base = declarative_base()
 
 load_dotenv()
 
-def  db_connect():
-    username = os.getenv("DATABASE_USERNAME")
-    password = os.getenv("DATABASE_PASSWORD")
-    dbname = os.getenv("DATABASE_NAME")
-    port = os.getenv("DATABASE_PORT")
-    host = os.getenv("DATABASE_HOST")
+def db_connect(testing=False):
+    
+    if testing:
+        username = os.getenv("TEST_DATABASE_USERNAME")
+        password = os.getenv("TEST_DATABASE_PASSWORD")
+        dbname = os.getenv("TEST_DATABASE_NAME")
+        port = os.getenv("TEST_DATABASE_PORT")
+        host = os.getenv("TEST_DATABASE_HOST")
+        
+    else:
+        username = os.getenv("DATABASE_USERNAME")
+        password = os.getenv("DATABASE_PASSWORD")
+        dbname = os.getenv("DATABASE_NAME")
+        port = os.getenv("DATABASE_PORT")
+        host = os.getenv("DATABASE_HOST")
 
     engine = create_engine(f"postgresql+psycopg2://{username}:{password}@{host}:{port}/{dbname}", echo=True)
     connection = engine.connect()
-
+    
     return engine, connection
 
-
-def  create_tables(engine):
-    metadata.drop_all(engine, checkfirst=True)
-    metadata.create_all(engine, checkfirst=True)
-
-
-def  create_tables_orm(engine):
-    Base.metadata.drop_all(engine, checkfirst=True)
-    Base.metadata.create_all(engine, checkfirst=True)
+def create_tables(local_engine):
+    metadata.drop_all(local_engine, checkfirst=True)
+    metadata.create_all(local_engine, checkfirst=True)
 
 
-def  create_session(engine):
-    Session = sessionmaker(bind=engine)
+def create_tables_orm(local_engine):
+    Base.metadata.drop_all(local_engine, checkfirst=True)
+    Base.metadata.create_all(local_engine, checkfirst=True)
+
+
+def create_session(local_engine):
+    Session = sessionmaker(local_engine)
     session = Session()
 
     return session
