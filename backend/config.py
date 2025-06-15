@@ -5,6 +5,7 @@ from handlers.crud_user.registration import registration_blueprint
 from handlers.crud_user.login import login_blueprint
 from handlers.crud_user.delete import delete_blueprint
 from handlers.crud_user.update import update_blueprint
+from handlers.crud_user.read import read_blueprint
 from models.user_login import UserLogin
 from flask_login import LoginManager
 
@@ -22,12 +23,13 @@ def create_app(testing=False):
     app.register_blueprint(login_blueprint)
     app.register_blueprint(delete_blueprint)
     app.register_blueprint(update_blueprint)
+    app.register_blueprint(read_blueprint)
     
     engine, SessionLocal = db_connect(testing=testing)
     
     @app.teardown_appcontext
     def shutdown_session(exception=None):
-        db = g.pop('db_session', None)
+        db = g.pop("db_session", None)
         if db is not None:
             db.close()
 

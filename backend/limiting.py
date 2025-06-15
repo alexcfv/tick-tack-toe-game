@@ -11,7 +11,7 @@ clients = {}
 
 @app.before_request
 def limiting_remote_addr():
-    if request.path == '/game':
+    if request.path == "/game":
         return
     
     ip = request.remote_addr

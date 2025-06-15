@@ -1,8 +1,7 @@
 from flask import request, Blueprint, jsonify
 from werkzeug.security import check_password_hash
-from api.api_user import getUserById, deleteUserById
+from api.api_user import getUser, deleteUserById
 from flask_login import login_required
-from models.user_login import UserLogin
 
 delete_blueprint = Blueprint("delete", __name__)
 
@@ -10,13 +9,18 @@ delete_blueprint = Blueprint("delete", __name__)
 @login_required
 async def delete():
     user = request.get_json()
-    user_name = user["user_name"]  
-    user_from_bd = await getUserById(int(UserLogin.get_id()))
+    
+    try:
+        user_name = user["user_name"]
+    except:
+        return "Must have user_name", 400
+    
+    user_from_bd = await getUser(user_name)
     
     if user_from_bd and user_from_bd.user_name == user_name:
         user_id = user_from_bd.id
         result = await deleteUserById(user_id)
-        if result: return "Succesful delete"
+        if result: return jsonify("Succesful delete"), 204
     
     else:
-        return "Have not user"
+        return jsonify("Have not user"), 400

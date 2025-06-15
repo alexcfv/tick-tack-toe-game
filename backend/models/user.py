@@ -3,7 +3,7 @@ from models.db import Base
 
 class User(Base):
     __tablename__ = "users"
-    __table_args__ = {'extend_existing': True}
+    __table_args__ = {"extend_existing": True}
 
     id = Column(Integer, nullable=True, primary_key=True)
     user_name = Column(Text, nullable=False)

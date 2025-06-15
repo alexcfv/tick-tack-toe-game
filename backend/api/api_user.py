@@ -1,4 +1,4 @@
-from models.db import create_session, db_connect
+from models.db import db_connect
 from models.user import User
 from flask import jsonify, g
 
