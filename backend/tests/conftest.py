@@ -3,30 +3,30 @@ from config import create_app
 from models.db import db_connect, metadata
 
 @pytest.fixture(scope="session")
-def engine_and_session():
+def db_session():
     engine, SessionLocal = db_connect(testing=True)
-    metadata.create_all(bind=engine)
-    yield engine, SessionLocal
-    metadata.drop_all(bind=engine)
+    connection = engine.connect()
+    transaction = connection.begin()
+    session = SessionLocal(bind=connection)
+    
+    yield session
+    
+    session.close()
+    transaction.rollback()
+    connection.close()
 
 @pytest.fixture
-def app(engine_and_session):
-    engine, SessionLocal = engine_and_session
-    
+def app(db_session):
     app = create_app(testing=True)
-    
-    @app.before_request
-    def bind_test_session():
-        from flask import g
-        g.db_session = SessionLocal()
-    
-    @app.teardown_request
-    def remove_session(exception=None):
-        from flask import g
-        if hasattr(g, 'db_session'):
-            g.db_session.close()
-        
-    yield app
 
+    @app.before_request
+    def inject_session():
+        from flask import g
+        g.db_session = db_session
+
+    yield app
+        
+
+@pytest.fixture
 def client(app):
     return app.test_client()

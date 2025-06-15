@@ -12,7 +12,7 @@ async def registration():
     registing_user_password = registing_user["password"]
     
     if len(registing_user_name.strip()) == 0 or len(registing_user_password.strip()) == 0:
-        return "Uncorrect user password or user name"
+        return jsonify("Uncorrect user password or user name"), 422
     
     registing_user_password = registing_user_password.strip()
     
@@ -22,5 +22,5 @@ async def registration():
         hash = generate_password_hash(registing_user_password)
         result = await addUser(registing_user_name, hash)
     
-    if result: return "Registration succesful"
-    else: return "Eror"
+    if result: return jsonify("Registration succesful"), 201
+    else: return jsonify("Error"), 400
