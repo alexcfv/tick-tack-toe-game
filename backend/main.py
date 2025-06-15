@@ -1,5 +1,4 @@
-from flask import Flask
-from flask_cors import CORS
+from config import create_app
 from handlers.crud_user.registration import registration_blueprint
 from handlers.crud_user.login import login_blueprint
 from handlers.crud_user.delete import delete_blueprint
@@ -11,8 +10,7 @@ import os
 
 load_dotenv()
 
-app = Flask(__name__)
-CORS(app)
+app = create_app()
 
 login_manager = LoginManager(app)
 

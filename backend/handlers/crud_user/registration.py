@@ -11,6 +11,11 @@ async def registration():
     
     registing_user_password = registing_user["password"]
     
+    if len(registing_user_name.strip()) == 0 or len(registing_user_password.strip()) == 0:
+        return "Uncorrect user password or user name"
+    
+    registing_user_password = registing_user_password.strip()
+    
     if len(registing_user_name) > 4  and len(registing_user_name) < 20 \
         and len(registing_user_password) > 4 and len(registing_user_password) < 20:
                 

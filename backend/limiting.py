@@ -9,8 +9,11 @@ RATE_LIMIT = 5
 RATE_PERIOD = 10
 clients = {}
 
-app.before_request
+@app.before_request
 def limiting_remote_addr():
+    if request.path == '/game':
+        return
+    
     ip = request.remote_addr
     now = time()
     

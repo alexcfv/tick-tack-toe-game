@@ -9,8 +9,8 @@ login_blueprint = Blueprint("login", __name__)
 @login_blueprint.route("/login", methods=["POST"])
 async def login():
     logging_user = request.get_json()
-    logging_user_password = logging_user["password"]
     logging_user_name = logging_user["user_name"]
+    logging_user_password = logging_user["password"].strip()
     
     user_from_bd = await getUser(logging_user_name)
     

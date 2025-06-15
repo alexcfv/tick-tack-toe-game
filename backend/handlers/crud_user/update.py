@@ -12,7 +12,7 @@ update_blueprint = Blueprint("update", __name__)
 async def update():
     user = request.get_json()
     user_name = user["user_name"]
-    user_password = user["password"]
+    user_password = user["password"].strip()
     
     user_from_bd = await getUserById(int(UserLogin.get_id()))
     

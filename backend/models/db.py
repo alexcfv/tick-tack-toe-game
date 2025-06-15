@@ -4,6 +4,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from dotenv import load_dotenv
 import os
 
+#Экранирование от sql инъекций не нужно, использую orm
+
 metadata = MetaData()
 Base = declarative_base()
 
@@ -26,9 +28,9 @@ def db_connect(testing=False):
         host = os.getenv("DATABASE_HOST")
 
     engine = create_engine(f"postgresql+psycopg2://{username}:{password}@{host}:{port}/{dbname}", echo=True)
-    connection = engine.connect()
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     
-    return engine, connection
+    return engine, SessionLocal
 
 def create_tables(local_engine):
     metadata.drop_all(local_engine, checkfirst=True)
