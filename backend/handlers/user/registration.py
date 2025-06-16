@@ -14,6 +14,9 @@ async def registration():
     except:
         return jsonify("Must be user_name and password"), 400
     
+    if type(registing_user_name) != str or type(registing_user_password) != str:
+        return jsonify("Uncorrect user password or user name"), 422
+    
     if len(registing_user_name.strip()) == 0 or len(registing_user_password.strip()) == 0:
         return jsonify("Uncorrect user password or user name"), 422
     

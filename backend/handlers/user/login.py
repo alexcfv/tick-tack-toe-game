@@ -12,9 +12,14 @@ async def login():
     
     try:
         logging_user_name = logging_user["user_name"]
-        logging_user_password = logging_user["password"].strip()
+        logging_user_password = logging_user["password"]
     except:
         return jsonify("Must be user_name and password"), 400
+    
+    if type(logging_user_name) != str or type(logging_user_password) != str:
+        return jsonify("Uncorrect user password or user name"), 422
+    
+    logging_user_password = logging_user_password.strip()
     
     user_from_bd = await getUser(logging_user_name)
     

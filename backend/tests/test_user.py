@@ -5,10 +5,12 @@ from limiting import clients
     ({}, 400),
     ({"password": "No name"}, 400),
     ({"user_name": ""}, 400),
+    ({"user_name": ["wrong", "name"]}, 400),
+    ({"user_name": "Valid name", "password": ["wrong", "password"]}, 422),
     ({"user_name": "Valid name", "password": "OK"}, 400),
     ({"user_name": "Valid name", "password": "Valid password"}, 201),
 ])
-def test_create_item_various_inputs(client, payload, expected_code):
+def test_create_item(client, payload, expected_code):
     response = client.post("/registration", json=payload)
     assert response.status_code == expected_code
 
@@ -26,6 +28,8 @@ def test_read_item(client, id, expected_code):
     ({}, 400),
     ({"password": "No name"}, 400),
     ({"user_name": ""}, 400),
+    ({"user_name": ["wrong", "name"]}, 400),
+    ({"user_name": "Valid name", "password": ["wrong", "password"]}, 422),
     ({"user_name": "Valid name", "password": "OK"}, 400),
     ({"user_name": "Valid name", "password": "Valid password"}, 200),
 ])
@@ -38,6 +42,9 @@ def test_login(client, payload, expected_code):
     ({}, 400),
     ({"password": "No name"}, 400),
     ({"user_name": ""}, 400),
+    ({"user_name": ["wrong", "name"]}, 400),
+    ({"user_name": "Valid name", "password": ["wrong", "password"]}, 400),
+    ({"user_name": "Valid name", "password": ["wrong", "password"], "new_password" : ["wrong", "new_password"]}, 422),
     ({"user_name": "Valid name", "password": "OK"}, 400),
     ({"user_name": "Valid name", "password": "Valid password"}, 400),
     ({"user_name": "Valid name", "password": "Wrong password", "new_password": "new_password"}, 400),

@@ -12,10 +12,15 @@ async def update():
     user = request.get_json()
     try:
         user_name = user["user_name"]
-        user_password = user["password"].strip()
+        user_password = user["password"]
         new_user_password = user["new_password"]
     except:
         return "Must have user_name, password and new_password", 400
+    
+    if type(user_name) != str or type(user_password) != str or type(new_user_password) != str:
+        return jsonify("Uncorrect user password or user name"), 422
+    
+    user_password = user_password.strip()
     
     user_from_bd = await getUser(user_name)
     

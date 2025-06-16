@@ -15,6 +15,9 @@ async def delete():
     except:
         return "Must have user_name", 400
     
+    if type(user_name) != str:
+        return jsonify("Uncorrect user name"), 422
+    
     user_from_bd = await getUser(user_name)
     
     if user_from_bd and user_from_bd.user_name == user_name:
