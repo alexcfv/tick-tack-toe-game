@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from dotenv import load_dotenv
 import os
 
-#Экранирование от sql инъекций не нужно, использую orm
+#Экранирование не нужно, использую orm
 
 metadata = MetaData()
 Base = declarative_base()

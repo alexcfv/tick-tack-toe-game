@@ -1,11 +1,12 @@
 from flask import g, Flask
 from flask_cors import CORS
 from models.db import db_connect
-from handlers.crud_user.registration import registration_blueprint
-from handlers.crud_user.login import login_blueprint
-from handlers.crud_user.delete import delete_blueprint
-from handlers.crud_user.update import update_blueprint
-from handlers.crud_user.read import read_blueprint
+from handlers.user.registration import registration_blueprint
+from handlers.user.login import login_blueprint
+from handlers.user.delete import delete_blueprint
+from handlers.user.update import update_blueprint
+from handlers.user.read import read_blueprint
+from handlers.game.game import game_blueprint
 from models.user_login import UserLogin
 from flask_login import LoginManager
 from limiting import limiting_remote_addr
@@ -25,6 +26,7 @@ def create_app(testing=False):
     app.register_blueprint(delete_blueprint)
     app.register_blueprint(update_blueprint)
     app.register_blueprint(read_blueprint)
+    app.register_blueprint(game_blueprint)
     
     app.before_request(limiting_remote_addr)
     

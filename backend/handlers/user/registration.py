@@ -26,4 +26,4 @@ async def registration():
         result = await addUser(registing_user_name, hash)
     
         if result: return jsonify("Registration succesful"), 201
-    else: return jsonify("Error"), 400
+    else: return jsonify("Must be more 4 symbole in user name and password"), 400
