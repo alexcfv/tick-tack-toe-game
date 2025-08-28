@@ -9,8 +9,17 @@ login_blueprint = Blueprint("login", __name__)
 @login_blueprint.route("/login", methods=["POST"])
 async def login():
     logging_user = request.get_json()
-    logging_user_password = logging_user["password"]
-    logging_user_name = logging_user["user_name"]
+    
+    try:
+        logging_user_name = logging_user["user_name"]
+        logging_user_password = logging_user["password"]
+    except:
+        return jsonify("Must be user_name and password"), 400
+    
+    if type(logging_user_name) != str or type(logging_user_password) != str:
+        return jsonify("Uncorrect user password or user name"), 422
+    
+    logging_user_password = logging_user_password.strip()
     
     user_from_bd = await getUser(logging_user_name)
     
@@ -20,8 +29,8 @@ async def login():
         if check_password_hash(hash, logging_user_password):
             userlogin = UserLogin().create(user_from_bd)
             login_user(userlogin)
-            return 201
+            return jsonify("Login succesful"), 200
         else:
-            return 400
+            return jsonify("Uncorrect password"), 400
     else:
-        return 404
+        return jsonify("Error"), 400

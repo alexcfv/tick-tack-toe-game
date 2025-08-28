@@ -1,12 +1,9 @@
-from models.db import db_connect, create_session, metadata
+from models.db import db_connect
 from models.user import User
-from flask import jsonify
-from sqlalchemy import delete, Table
-
-engine, connection = db_connect()
+from flask import jsonify, g
 
 async def addUser(user_name: str, password: str) -> bool:
-    session = create_session(engine)
+    session = g.db_session
     with session:
         check_user_name = session.query(User).filter(User.user_name == user_name).all()
     
@@ -18,7 +15,7 @@ async def addUser(user_name: str, password: str) -> bool:
         return True
 
 async def getUser(user_name: str) -> User:
-    session = create_session(engine)
+    session = g.db_session
     with session:
         user_by_name = session.query(User).filter(User.user_name == user_name).first()
         
@@ -28,7 +25,7 @@ async def getUser(user_name: str) -> User:
             return None
 
 async def getUserById(user_id: int) -> bool:
-    session = create_session(engine)
+    session = g.db_session
     with session:
         user_by_id = session.query(User).filter(User.id == user_id).first()
         
@@ -38,7 +35,7 @@ async def getUserById(user_id: int) -> bool:
             return False
     
 async def deleteUserById(user_id: int) -> bool:
-    session = create_session(engine)
+    session = g.db_session
     with session:
         user_by_id = session.query(User).filter(User.id == user_id).first()
     
@@ -50,7 +47,7 @@ async def deleteUserById(user_id: int) -> bool:
             return False
         
 async def updateUserById(user_id: int, data: User) -> bool:
-    session = create_session(engine)
+    session = g.db_session
     with session:
         user_by_id = session.query(User).filter(User.id == user_id).first()
         

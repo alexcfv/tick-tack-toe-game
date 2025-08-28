@@ -1,5 +1,4 @@
 from api.api_user import getUserById
-#когда будет допилина игра используем @login_required
 
 class UserLogin():
     async def fromBD(self, user_id):

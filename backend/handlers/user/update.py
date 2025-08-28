@@ -10,15 +10,22 @@ update_blueprint = Blueprint("update", __name__)
 @login_required
 async def update():
     user = request.get_json()
-    user_name = user["user_name"]
-    user_password = user["password"]
+    try:
+        user_name = user["user_name"]
+        user_password = user["password"]
+        new_user_password = user["new_password"]
+    except:
+        return "Must have user_name, password and new_password", 400
+    
+    if type(user_name) != str or type(user_password) != str or type(new_user_password) != str:
+        return jsonify("Uncorrect user password or user name"), 422
+    
+    user_password = user_password.strip()
     
     user_from_bd = await getUser(user_name)
     
     if user_from_bd:
         if check_password_hash(user_from_bd.password, user_password):
-            
-            new_user_password = user["new_password"]
             
             new_user_info = User(
                 user_name=user_name,
@@ -29,7 +36,9 @@ async def update():
         
             result = updateUserById(user_id=user_id, data=new_user_info)
         
-            if result: return 200
-            else: return 400
+            if result: return jsonify("Update succesful"), 200
+            else: return jsonify("Error"), 400
+        else:
+            return "Uncorrect password", 400
     else:
-        return 404
+        return jsonify("Uncorrect password"), 400
