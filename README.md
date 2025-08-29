@@ -26,6 +26,7 @@ The project is created **for educational purposes** and is gradually being impro
 - **PostgreSQL**
 
 ### Frontend
+- **JavaScript**
 - **React**
 
 ---
