@@ -11,6 +11,8 @@ from models.user_login import UserLogin
 from flask_login import LoginManager
 from limiting import limiting_remote_addr
 
+#сервер time out стоит дефолтный
+
 def create_app(testing=False):
     app = Flask("main")
     CORS(app)
